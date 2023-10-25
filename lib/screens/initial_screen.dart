@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:primeiro_projeto/components/task.dart';
+import 'package:primeiro_projeto/data/task_inherited.dart';
+import 'package:primeiro_projeto/screens/form_screen.dart';
 
 class InitialScreen extends StatefulWidget {
   const InitialScreen({super.key});
@@ -9,8 +10,6 @@ class InitialScreen extends StatefulWidget {
 }
 
 class _InitialScreenState extends State<InitialScreen> {
-  bool opacidade = true;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,32 +17,20 @@ class _InitialScreenState extends State<InitialScreen> {
         leading: Container(),
         title: const Text('Aprimorar atributos'),
       ),
-      body: AnimatedOpacity(
-        opacity: opacidade ? 1 : 0,
-        duration: const Duration(milliseconds: 800),
-        child: ListView(
-          children: const [
-            Task('Força',
-                'assets/images/icone_forca.png', 4),
-            Task('Vitalidade',
-                'assets/images/icone_vitalidade.png', 4),
-            Task('Mana',
-                'assets/images/icone_mana.png', 3),
-            Task('Arcano',
-                'assets/images/icone_arcano.png', 3),
-            Task('Arco',
-                'assets/images/icone_arco.png', 2),
-                SizedBox(height: 60,)
-          ],
-        ),
+      body: ListView(
+        children: TaskInherited.of(context).taskList,
+        padding: EdgeInsets.only(top: 8, bottom: 70),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          setState(() {
-            opacidade = !opacidade;
-          });
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (contextNew) => FormScreen(taskContext: context,),
+            ),
+          );
         },
-        child: const Icon(Icons.remove_red_eye),
+        child: const Icon(Icons.add),
       ),
     );
   }
